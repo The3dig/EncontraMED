@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Encontramed</title>
+  <meta name="description" content="Encontre onde existe o medicamento: farmácias da sua cidade e lojas online, com estoque classificado e fonte rastreável.">
+  <meta name="theme-color" content="#0b6e4f">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Encontramed">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1 class="brand"><span class="logo" aria-hidden="true">+</span>Encontramed</h1>
+      <p class="tagline">Onde existe o seu medicamento — perto de você ou com entrega.</p>
+      <form id="search" class="search" autocomplete="off">
+        <label class="field">
+          <span>Medicamento</span>
+          <input id="medicine" name="medicine" required minlength="2" placeholder="Ex.: Amplictil 25 mg" enterkeyhint="next">
+        </label>
+        <label class="field">
+          <span>Cidade ou CEP</span>
+          <input id="location" name="location" placeholder="Ex.: 11666-630" inputmode="text" enterkeyhint="search">
+        </label>
+        <button type="submit" class="btn-primary" id="go">BUSCAR MEDICAMENTO</button>
+      </form>
+      <div id="recent" class="recent" hidden></div>
+    </div>
+  </header>
+
+  <main class="wrap" id="main">
+    <section id="status" class="status" hidden></section>
+    <section id="results" hidden>
+      <div id="query-info" class="query-info"></div>
+      <div id="alerts"></div>
+
+      <nav class="sorts" role="tablist" aria-label="Ordenar resultados">
+        <button role="tab" data-sort="relevancia" aria-selected="true">Recomendados</button>
+        <button role="tab" data-sort="proximos">Mais próximos</button>
+        <button role="tab" data-sort="preco">Menor preço</button>
+        <button role="tab" data-sort="entrega">Entrega mais rápida</button>
+        <button role="tab" data-sort="confirmado">Estoque confirmado</button>
+      </nav>
+
+      <section class="stage">
+        <h2><span class="step">1</span> Retirada presencial <small id="city-label"></small></h2>
+        <div id="local-list" class="list"></div>
+        <details id="pharmacies-box" class="box">
+          <summary>Farmácias da cidade sem dados de estoque <span id="pharm-count" class="count"></span></summary>
+          <p class="muted">Estas farmácias foram localizadas no mapa, mas não publicam estoque. Ligue antes de ir.</p>
+          <div id="pharm-list" class="list compact"></div>
+        </details>
+      </section>
+
+      <section class="stage">
+        <h2><span class="step">2</span> Compra pela internet</h2>
+        <p id="expansion" class="muted"></p>
+        <div id="online-list" class="list"></div>
+      </section>
+
+      <section class="stage" id="related-stage" hidden>
+        <h2><span class="step">=</span> Mesmo princípio ativo e dosagem</h2>
+        <p class="muted">Genéricos/similares encontrados. O Encontramed não sugere substituições: a troca só deve ser feita com orientação do prescritor ou do farmacêutico.</p>
+        <div id="related-list" class="list"></div>
+      </section>
+
+      <section class="stage" id="manual-stage" hidden>
+        <h2><span class="step">?</span> Consultar manualmente</h2>
+        <p class="muted">Fontes sem integração autorizada. Não mostramos dados delas para não inventar resultados — use o link abaixo.</p>
+        <div id="manual-list" class="list compact"></div>
+      </section>
+
+      <details class="box" id="sources-box">
+        <summary>Relatório das fontes consultadas</summary>
+        <div id="sources-list"></div>
+      </details>
+
+      <details class="box">
+        <summary>Como classificamos o estoque</summary>
+        <dl class="legend">
+          <dt><span class="badge s-ESTOQUE_CONFIRMADO">Estoque confirmado</span></dt>
+          <dd>O sistema de pedidos da loja confirmou, no horário indicado, que o item pode ser vendido para o seu CEP ou retirado naquela loja.</dd>
+          <dt><span class="badge s-DISPONIBILIDADE_INFORMADA">Disponibilidade informada</span></dt>
+          <dd>A loja informa que tem, mas não foi possível confirmar em tempo real.</dd>
+          <dt><span class="badge s-CONSULTAR_FARMACIA">Consultar farmácia</span></dt>
+          <dd>Produto anunciado ou farmácia localizada, sem informação confiável de estoque.</dd>
+          <dt><span class="badge s-INDISPONIVEL">Indisponível</span></dt>
+          <dd>A fonte informa que não há estoque.</dd>
+        </dl>
+      </details>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>O Encontramed não vende medicamentos e não substitui orientação médica ou farmacêutica. Preços e estoques são das fontes indicadas, no horário indicado.</p>
+  </footer>
+
+  <template id="offer-tpl">
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <h3 class="store"></h3>
+          <p class="product"></p>
+        </div>
+        <span class="badge"></span>
+      </div>
+      <div class="card-body">
+        <dl class="facts"></dl>
+        <ul class="warnings"></ul>
+      </div>
+      <div class="actions"></div>
+      <p class="evidence"></p>
+    </article>
+  </template>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

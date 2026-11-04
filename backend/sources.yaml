@@ -1,0 +1,102 @@
+# Registro de fontes do Encontramed.
+#
+# Adicionar uma loja VTEX = adicionar 4 linhas aqui. Nenhum código novo.
+# Antes de habilitar uma loja nova, rode:
+#     python -m app.cli verify-sources
+# que testa se o catálogo e a simulação de checkout respondem.
+#
+# Campos comuns: id (único), name, type, enabled.
+# `verified` registra a última verificação manual (não é usado pelo motor).
+
+sources:
+  # ---------- Diretórios de farmácias físicas (endereço/telefone/horário, SEM estoque) ----------
+  - id: osm
+    type: osm_overpass
+    name: OpenStreetMap (farmácias mapeadas)
+    enabled: true
+    fallback_radius_m: 12000
+
+  - id: google_places
+    type: google_places
+    name: Google Maps (Places API)
+    enabled: true          # só roda se GOOGLE_PLACES_API_KEY estiver definida
+
+  # ---------- Redes com loja VTEX (catálogo + simulação de checkout com CEP) ----------
+  # Plataforma VTEX identificada publicamente; confirmar com `verify-sources`.
+  - id: drogariasaopaulo
+    type: vtex
+    name: Drogaria São Paulo
+    chain: DPSP
+    host: www.drogariasaopaulo.com.br
+    sales_channel: 1
+    enabled: true
+    verified: false
+
+  - id: drogariaspacheco
+    type: vtex
+    name: Drogarias Pacheco
+    chain: DPSP
+    host: www.drogariaspacheco.com.br
+    sales_channel: 1
+    enabled: true
+    verified: false
+
+  - id: paguemenos
+    type: vtex
+    name: Pague Menos
+    host: www.paguemenos.com.br
+    sales_channel: 1
+    enabled: true
+    verified: false
+
+  - id: araujo
+    type: vtex
+    name: Drogaria Araujo
+    host: www.araujo.com.br
+    sales_channel: 1
+    enabled: true
+    verified: false
+
+  - id: venancio
+    type: vtex
+    name: Drogaria Venancio
+    host: www.drogariavenancio.com.br
+    sales_channel: 1
+    enabled: true
+    verified: false
+
+  # ---------- Sem integração autorizada: link de consulta direta ----------
+  - id: drogasil
+    type: manual_link
+    name: Drogasil
+    enabled: true
+    search_url: "https://www.drogasil.com.br/search?w={q}"
+    reason: "Plataforma própria (RD Saúde) sem API pública de estoque. Consulte o site/app ou ligue para a loja. Integração depende de parceria."
+
+  - id: drogaraia
+    type: manual_link
+    name: Droga Raia
+    enabled: true
+    search_url: "https://www.drogaraia.com.br/search?w={q}"
+    reason: "Plataforma própria (RD Saúde) sem API pública de estoque. Consulte o site/app ou ligue para a loja. Integração depende de parceria."
+
+  - id: panvel
+    type: manual_link
+    name: Panvel
+    enabled: true
+    search_url: "https://www.panvel.com/panvel/buscarProduto.do?termoPesquisa={q}"
+    reason: "Sem API pública documentada. Consulta manual."
+
+  - id: ultrafarma
+    type: manual_link
+    name: Ultrafarma
+    enabled: true
+    search_url: "https://www.ultrafarma.com.br/busca?q={q}"
+    reason: "Sem API pública documentada. Consulta manual."
+
+  - id: consultaremedios
+    type: manual_link
+    name: Consulta Remédios (comparador)
+    enabled: true
+    search_url: "https://consultaremedios.com.br/busca?termo={q}"
+    reason: "Comparador de preços; termos de uso não autorizam coleta automatizada. Preço anunciado não é estoque confirmado."
